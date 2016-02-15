@@ -148,6 +148,11 @@ public class SearchCriteria {
     public String getFieldQueryInStringFormat() {
 
         StringBuilder stringBuilder = new StringBuilder();
+
+        if (fieldKeyValues == null) {
+            return null;
+        }
+
         for(String string: fieldKeyValues) {
             stringBuilder.append(string+"\n");
         }

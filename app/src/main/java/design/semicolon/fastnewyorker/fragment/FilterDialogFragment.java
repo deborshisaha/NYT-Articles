@@ -163,12 +163,16 @@ public class FilterDialogFragment extends DialogFragment {
 
                 String[] fields = getResources().getStringArray(R.array.news_desk_values);
 
-                for(int i=0; i < fields.length; i++) {
-                    if (mSelectedItemsSet.contains(fields[i])){
-                        options[i] = true;
-                    } else {
-                        options[i] = false;
+                if (mSelectedItemsSet != null){
+                    for(int i=0; i < fields.length; i++) {
+                        if (mSelectedItemsSet.contains(fields[i])){
+                            options[i] = true;
+                        } else {
+                            options[i] = false;
+                        }
                     }
+                } else {
+                    mSelectedItemsSet = new LinkedHashSet<>();
                 }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -231,6 +235,7 @@ public class FilterDialogFragment extends DialogFragment {
     }
 
     private String getDueDateReadableFormat (Date date) {
+        if (date == null) {return null;}
         SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM dd, yyyy");
         return dateFormatter.format(date);
     }
