@@ -36,10 +36,13 @@ public class FilterDialogFragment extends DialogFragment {
     private TextView tvShowResultsToLabel;
     private TextView tvShowResultsToValue;
 
+    private TextView tvSortByLabel;
+    private TextView tvSortByValue;
+
     private TextView tvTopicsInterestedLabel;
     private TextView tvTopicsInterestedValue;
 
-    private boolean[] options = new boolean[] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+    private boolean[] options = new boolean[] { false, false, false};
     private boolean[] clickedItems = options;
 
 
@@ -80,11 +83,21 @@ public class FilterDialogFragment extends DialogFragment {
         tvTopicsInterestedLabel  = (TextView) view.findViewById(R.id.topics_interested_label);
         tvTopicsInterestedValue  = (TextView) view.findViewById(R.id.topics_interested_value);
 
-        Calendar todaysCalendar = Calendar.getInstance();
-        SearchCriteria.getSavedInstance(getActivity()).setEndDate(new java.sql.Date(todaysCalendar.getTime().getTime()));
-        SearchCriteria.getSavedInstance(getActivity()).save();
+        tvSortByLabel  = (TextView) view.findViewById(R.id.sort_by_label);
+        tvSortByValue  = (TextView) view.findViewById(R.id.sort_by_value);
+        tvSortByValue.setText(SearchCriteria.getSavedInstance(getActivity()).getSortOrder());
 
-        tvShowResultsToValue.setText(getDueDateReadableFormat(todaysCalendar.getTime()));
+        tvShowResultsFromValue.setText(getDueDateReadableFormat(SearchCriteria.getSavedInstance(getActivity()).getBeginDateInDate()));
+
+        if (SearchCriteria.getSavedInstance(getActivity()).getEndDateInDate() == null){
+            // No end date saved
+            Calendar todaysCalendar = Calendar.getInstance();
+            SearchCriteria.getSavedInstance(getActivity()).setEndDate(new java.sql.Date(todaysCalendar.getTime().getTime()));
+            SearchCriteria.getSavedInstance(getActivity()).save();
+            tvShowResultsToValue.setText(getDueDateReadableFormat(todaysCalendar.getTime()));
+        } else {
+            tvShowResultsToValue.setText(getDueDateReadableFormat( SearchCriteria.getSavedInstance(getActivity()).getEndDateInDate()));
+        }
 
         DateFormOnClickListener onClickShowResultsBeginDateListener = new DateFormOnClickListener() {
             @Override
@@ -160,15 +173,17 @@ public class FilterDialogFragment extends DialogFragment {
 
                         String[] fields = getResources().getStringArray(R.array.news_desk_values);
                         if (fields.length < options.length) {
-                            Set<String> setOfStrings = new LinkedHashSet<String>();
+
+                            Set<String> setOfStrings = new LinkedHashSet<>();
+
                             for (int i = 0; i < options.length; i++) {
-                                if (options[i] == true) {
+                                if (options[i]) {
                                     setOfStrings.add(fields[i]);
                                     tvTopicsInterestedValue.setText(fields[i]+ ", ");
                                 }
                             }
 
-                            if (setOfStrings != null){
+                            if (setOfStrings != null && setOfStrings.size() != 0){
                                 SearchCriteria.getSavedInstance(getActivity()).setFieldKeyValues(setOfStrings);
                                 SearchCriteria.getSavedInstance(getActivity()).save();
                             }
@@ -185,6 +200,21 @@ public class FilterDialogFragment extends DialogFragment {
                 dialog.show();
             }
         };
+
+        tvSortByValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SearchCriteria.getSavedInstance(getActivity()).getSortOrder().equals("newest")) {
+                    SearchCriteria.getSavedInstance(getActivity()).setSortOrder(false);
+                    SearchCriteria.getSavedInstance(getActivity()).save();
+                    tvSortByValue.setText(SearchCriteria.getSavedInstance(getActivity()).getSortOrder());
+                } else if (SearchCriteria.getSavedInstance(getActivity()).getSortOrder().equals("oldest")){
+                    SearchCriteria.getSavedInstance(getActivity()).setSortOrder(true);
+                    SearchCriteria.getSavedInstance(getActivity()).save();
+                    tvSortByValue.setText(SearchCriteria.getSavedInstance(getActivity()).getSortOrder());
+                }
+            }
+        });
 
         tvShowResultsFromValue.setOnClickListener(onClickShowResultsBeginDateListener);
         tvShowResultsToValue.setOnClickListener(onClickShowResultsEndDateListener);
