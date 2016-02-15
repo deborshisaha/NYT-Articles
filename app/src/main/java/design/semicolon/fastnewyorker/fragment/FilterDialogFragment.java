@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import design.semicolon.fastnewyorker.R;
@@ -45,8 +46,7 @@ public class FilterDialogFragment extends DialogFragment {
     private boolean[] options = new boolean[] { false, false, false};
     private boolean[] clickedItems = options;
 
-
-    private Date placeholderDate;
+    Set<String> mSelectedItemsSet;
 
     public FilterDialogFragment() {
         // Empty constructor is required for DialogFragment
@@ -88,6 +88,7 @@ public class FilterDialogFragment extends DialogFragment {
         tvSortByValue.setText(SearchCriteria.getSavedInstance(getActivity()).getSortOrder());
 
         tvShowResultsFromValue.setText(getDueDateReadableFormat(SearchCriteria.getSavedInstance(getActivity()).getBeginDateInDate()));
+        tvTopicsInterestedValue.setText(SearchCriteria.getSavedInstance(getActivity()).getFieldQueryInStringFormat());
 
         if (SearchCriteria.getSavedInstance(getActivity()).getEndDateInDate() == null){
             // No end date saved
@@ -157,47 +158,50 @@ public class FilterDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
+                // where we will store or remove selected items
+                mSelectedItemsSet = SearchCriteria.getSavedInstance(getActivity()).getFieldKeyValues();
+
+                String[] fields = getResources().getStringArray(R.array.news_desk_values);
+
+                for(int i=0; i < fields.length; i++) {
+                    if (mSelectedItemsSet.contains(fields[i])){
+                        options[i] = true;
+                    } else {
+                        options[i] = false;
+                    }
+                }
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+                // set the dialog title
                 builder.setTitle("Pick topics").setMultiChoiceItems(R.array.news_desk_values, options, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                                        int which, boolean isChecked) {
-                        clickedItems[which] = isChecked;
-                    }
-                }).setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                        options = clickedItems;
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
                         String[] fields = getResources().getStringArray(R.array.news_desk_values);
-                        if (fields.length < options.length) {
 
-                            Set<String> setOfStrings = new LinkedHashSet<>();
+                        if (isChecked) {
+                            mSelectedItemsSet.add(fields[which]);
+                        } else if (mSelectedItemsSet.contains(fields[which])) {
+                            mSelectedItemsSet.remove(fields[which]);
+                        }
+                    }
 
-                            for (int i = 0; i < options.length; i++) {
-                                if (options[i]) {
-                                    setOfStrings.add(fields[i]);
-                                    tvTopicsInterestedValue.setText(fields[i]+ ", ");
-                                }
-                            }
-
-                            if (setOfStrings != null && setOfStrings.size() != 0){
-                                SearchCriteria.getSavedInstance(getActivity()).setFieldKeyValues(setOfStrings);
-                                SearchCriteria.getSavedInstance(getActivity()).save();
-                            }
+                }).setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (mSelectedItemsSet != null && mSelectedItemsSet.size() != 0){
+                            SearchCriteria.getSavedInstance(getActivity()).setFieldKeyValues(mSelectedItemsSet);
+                            SearchCriteria.getSavedInstance(getActivity()).save();
+                            tvTopicsInterestedValue.setText(SearchCriteria.getSavedInstance(getActivity()).getFieldQueryInStringFormat());
                         }
                     }
                 }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                    public void onClick(DialogInterface dialog, int id) {
                     }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                }).show();
             }
         };
 

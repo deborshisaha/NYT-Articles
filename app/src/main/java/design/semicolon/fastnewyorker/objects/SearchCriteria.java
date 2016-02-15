@@ -18,6 +18,7 @@ public class SearchCriteria {
 
     private static SearchCriteria instance;
     private Context mContext;
+    private int fieldQueryInStringFormat;
 
     public static SearchCriteria getSavedInstance(Context context) {
         if (instance != null) {
@@ -34,9 +35,8 @@ public class SearchCriteria {
                 String endDateTemp = scp.getString("endDate", null);
                 String searchQueryTextTemp = scp.getString("searchQueryText", null);
                 String sortOrderTemp = scp.getString("sortOrder", null);
-                Set<String> fieldKeyValuesTemp = scp.getStringSet("fieldKeys", null);
 
-                instance.fieldKeyValues = fieldKeyValuesTemp;
+                instance.fieldKeyValues = scp.getStringSet("fieldKeys", null);;
 
                 try{
                     instance.beginDate = Util.transformToDate(beginDateTemp, new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH));
@@ -69,6 +69,14 @@ public class SearchCriteria {
         return Util.dateInAPIQueryFormat(endDate);
     }
 
+    public Date getBeginDateInDate() {
+        return beginDate;
+    }
+
+    public Date getEndDateInDate() {
+        return endDate;
+    }
+
     public String getSortOrder(){
 
         if (sortOrder == null || sortOrder.length() == 0){
@@ -82,18 +90,18 @@ public class SearchCriteria {
 
         if (fieldKeyValues == null){return null;}
 
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
 
         for(String fieldValue:fieldKeyValues){
-            stringBuffer.append("\"" + fieldValue + "\"");
+            stringBuilder.append(" \"" + fieldValue + "\"");
             Log.d("SearchCriteria", "field value:" + fieldValue);
         }
 
-        if (stringBuffer.toString().length() == 0) {
+        if (stringBuilder.toString().length() == 0) {
             return null;
         }
 
-        String fieldKV = "news_desk:("+stringBuffer+")";
+        String fieldKV = "news_desk:("+stringBuilder+")";
         Log.d("SearchCriteria", "fieldKV:" + fieldKV);
         return fieldKV;
     }
@@ -102,6 +110,8 @@ public class SearchCriteria {
         if (mContext == null){return;}
         SharedPreferences scp = sharedSearchCriteriaPreferences();
         SharedPreferences.Editor editor = scp.edit();
+
+        if (editor == null) {return;}
 
         editor.putString("searchQueryText", searchQueryText);
         editor.putString("beginDate", getBeginDate());
@@ -135,6 +145,16 @@ public class SearchCriteria {
         this.endDate = endDate;
     }
 
+    public String getFieldQueryInStringFormat() {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for(String string: fieldKeyValues) {
+            stringBuilder.append(string+"\n");
+        }
+
+        return stringBuilder.toString();
+    }
+
     /**
      *  Private methods
      */
@@ -151,10 +171,16 @@ public class SearchCriteria {
     }
 
     private String sortOrder;
+
+    public Set<String> getFieldKeyValues() {
+        return fieldKeyValues;
+    }
+
     private Set<String> fieldKeyValues;
 
     private SharedPreferences sharedSearchCriteriaPreferences() {
         if (mContext == null){return null;}
         return mContext.getSharedPreferences("search_criteria", Context.MODE_PRIVATE);
     }
+
 }
