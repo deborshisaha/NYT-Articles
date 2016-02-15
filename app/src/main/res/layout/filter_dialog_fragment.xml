@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="design.semicolon.fastnewyorker.activity.HomeActivity">
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/begin_date"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:id="@+id/from_label"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/from_value"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/end_date"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:id="@+id/to_label"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_value"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/topics_interested"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:id="@+id/topics_interested_label" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/tap_to_select_topics"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:id="@+id/topics_interested_value" />
+
+    </RelativeLayout>
+
+</LinearLayout>

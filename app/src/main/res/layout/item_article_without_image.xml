@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="7dp"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
+    android:background="@drawable/rounded_view">
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:id="@+id/article_favorite_icon_wo_image_iv"
+        android:src="@drawable/favorite"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/article_headline_kicker_wo_image_tv"
+        android:layout_below="@+id/article_favorite_icon_wo_image_iv"
+        android:paddingTop="7dp"
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#ff000000"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/article_snippet_wo_image_tv"
+        android:paddingTop="4dp"
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp"
+        android:paddingBottom="7dp"
+        android:textSize ="12sp"
+        android:layout_below="@+id/article_headline_kicker_wo_image_tv"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/seperator_line"
+        android:layout_below="@+id/article_snippet_wo_image_tv"
+        android:background="#EDEDED"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/article_originals_wo_image_tv"
+        android:paddingTop="4dp"
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp"
+        android:paddingBottom="7dp"
+        android:textSize ="8sp"
+        android:layout_below="@+id/seperator_line"/>
+
+</LinearLayout>
