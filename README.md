@@ -1,6 +1,6 @@
 # Project 2 - *NYT Articles*
 
-**Name of your app** is an android app that allows a user to search for images on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
+**NYT Articles** is an android app that allows a user to search for images on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
 Time spent: **25** hours spent in total
 
@@ -32,13 +32,15 @@ The following **bonus** features are implemented:
 * [x] For different news articles that only have text or only have images, use [Heterogenous Layouts](http://guides.codepath.com/android/Heterogenous-Layouts-inside-RecyclerView) with RecyclerView
 * [x] Apply the popular [Butterknife annotation library](http://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife) to reduce view boilerplate.
 * [ ] Leverage the popular [GSON library](http://guides.codepath.com/android/Using-Android-Async-Http-Client#decoding-with-gson-library) to streamline the parsing of JSON data.
-* [ ] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
+* [x] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
 
 The following **additional** features are implemented:
 
+* [x] Results are marked with asterix if the user marked it a favorite
+* [x] Used Active Android to cache results and batch save them
 * [x] Mark articles as Favorite
 * [x] Save results and show when there is no internet
-* [x] Caching strategy
+* [x] Caching strategy (Cache Only, Cache Then Network, Network Only modes)
 * [x] pull to refresh
 
 ## Video Walkthrough
